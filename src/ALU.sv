@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module ALU (
   input logic   [7:0] IN_A,
   input logic   [7:0] IN_R,
