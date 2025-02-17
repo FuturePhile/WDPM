@@ -8,14 +8,14 @@ module ALU (
   output logic        OUT_CY
 );
 
-typedef enum logic [2:0] { 
-  ADD = 3'b000, 
-  SUB = 3'b001, 
-  OR  = 3'b010, 
-  AND = 3'b011, 
-  XOR = 3'b100, 
-  NOT = 3'b101, 
-  LD  = 3'b110 
+typedef enum logic [3:0] { 
+  ADD = 4'b0000, 
+  SUB = 4'b0001, 
+  OR  = 4'b0010, 
+  AND = 4'b0011, 
+  XOR = 4'b0100, 
+  NOT = 4'b0101, 
+  LD  = 4'b0110
   } OP_CODE;
 
 always_comb begin : ALU
@@ -44,7 +44,7 @@ always_comb begin : ALU
       OUT_CY = 0;
       OUT_A = ~IN_A;
     end
-    LD : begin
+    LD  : begin
       OUT_A = IN_R;
     end
     default : begin
