@@ -50,8 +50,17 @@ typedef enum logic [3:0] {
   DM = 2'b11
   } AUX_SRC_T;
 
+   typedef enum logic [1:0] { 
+  RP0 = 2'b00,
+  RP1 = 2'b01,
+  RP2 = 2'b10,
+  RP3 = 2'b11
+  } REG_PAGE_T;
+
 logic [3:0] op_code;
 logic [3:0] reg_code;
+logic [1:0] mux_code;
+lgoic [1:0] reg_page;
 logic [7:0] id_data;
 logic [4:0] jmp_addr;
 
@@ -59,54 +68,70 @@ assign op_code = ID_IN[15:12];
 assign reg_code = ID_IN[11:8];
 assign id_data =  ID_IN[7:0];
 assign jmp_addr = ID_IN[7:3];
+assign mux_code = reg_code[3:2];
+assign reg_page = reg_code[1:0];
+
+assign RF_ADDR = reg_page;
+assign DM_ADDR = {reg_page, id_data};
+assign ALU_MUX_SRC = mux_code;
 
 always_comb begin
   JMP       = 1'b0;
   JMP_ADDR  = '0;
   RF_EN     = 1'b0;
-  RF_ADDR   = REG_R0;
   DM_EN     = 1'b0;
-  DM_ADDR   = REG_DM0;
-  ALU_MUX_SRC = NS;
   ID_OUT    = id_data;
   ALU_OP    = OP_NOP;
   ACC_EN    = 1'b0;
 
   case (op_code)
     OP_ADD : begin
-      
+      ALU_OP = OP_ADD;
+      ACC_EN = 1'b1;
     end
     OP_SUB : begin
-      
+      ALU_OP = OP_SUB;
+      ACC_EN = 1'b1;
     end
     OP_OR : begin
-      
+      ALU_OP = OP_OR;
+      ACC_EN = 1'b1;
     end
     OP_AND : begin
-      
+      ALU_OP = OP_AND;
+      ACC_EN = 1'b1;
     end
     OP_XOR : begin
-      
+      ALU_OP = OP_XOR;
+      ACC_EN = 1'b1;
     end
     OP_NOT : begin
-      
+      ALU_OP = OP_NOT;
+      ACC_EN = 1'b1;
     end
     OP_ST : begin
-      
+      if (reg_code == RF) begin
+        RF_EN = 1'b1;
+      end else if (reg_code == DM) begin
+        DM_EN = 1'b1;
+      end
     end
     OP_LD : begin
-      
+      ALU_OP = OP_LD;
+      ACC_EN = 1'b1;
     end 
     OP_NOP : begin
-      
+      ALU_OP = OP_NOP;
     end
     OP_JMP : begin
-      
+      JMP = 1'b1;
+      JMP_ADDR = jmp_addr;
     end
     default: begin
-      
+      ALU_OP = OP_NOP;
     end
   endcase
+
 
 end
 
