@@ -9,8 +9,8 @@ module ALU_MUX (
 );
   
 typedef enum logic [1:0] { 
-  RF = 2'b00 
-  ID = 2'b01 
+  RF = 2'b00, 
+  ID = 2'b01, 
   DM = 2'b11
   } SRC_CODE;
 
