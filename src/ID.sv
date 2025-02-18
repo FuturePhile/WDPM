@@ -4,8 +4,8 @@ module ID (
   input logic CLK,
   input logic RST,
   input logic [15:0] ID_IN,
-  input logic FR_Z,
-  input logic FR_S,
+  input logic FR_Z, //reserved for future use
+  input logic FR_S, //reserved for future use
   output logic JMP,
   output logic [4:0] JMP_ADDR,
   output logic RF_EN,
@@ -60,7 +60,7 @@ typedef enum logic [3:0] {
 logic [3:0] op_code;
 logic [3:0] reg_code;
 logic [1:0] mux_code;
-lgoic [1:0] reg_page;
+logic [1:0] reg_page;
 logic [7:0] id_data;
 logic [4:0] jmp_addr;
 
@@ -110,9 +110,9 @@ always_comb begin
       ACC_EN = 1'b1;
     end
     OP_ST : begin
-      if (reg_code == RF) begin
+      if (mux_code == RF) begin
         RF_EN = 1'b1;
-      end else if (reg_code == DM) begin
+      end else if (mux_code == DM) begin
         DM_EN = 1'b1;
       end
     end
