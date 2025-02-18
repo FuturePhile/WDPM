@@ -3,7 +3,7 @@
 module ALU (
   input logic   [7:0] IN_A,
   input logic   [7:0] IN_R,
-  input logic   [2:0] IN_OP,
+  input logic   [3:0] IN_OP,
   input logic         CY_F,
   output logic  [7:0] OUT_A,
   output logic        OUT_CY
