@@ -4,6 +4,7 @@ module ALU (
   input logic   [7:0] IN_A,
   input logic   [7:0] IN_R,
   input logic   [2:0] IN_OP,
+  input logic         CY_F,
   output logic  [7:0] OUT_A,
   output logic        OUT_CY
 );
@@ -23,10 +24,10 @@ always_comb begin : ALU
   OUT_A = 8'b0;
   case (IN_OP)
     ADD : begin
-      {OUT_CY, OUT_A} = IN_A + IN_R;
+      {OUT_CY, OUT_A} = IN_A + IN_R + CY_F;
     end 
     SUB : begin
-      {OUT_CY, OUT_A} = IN_A - IN_R;
+      {OUT_CY, OUT_A} = IN_A - IN_R - CY_F;
     end
     OR : begin
       OUT_CY = 0;
