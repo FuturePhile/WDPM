@@ -1,18 +1,18 @@
 `timescale 1ns/1ps
 
 module Register (
-    input logic     CLK,
-    input logic     RST, 
-    input logic     EN,
-    input logic     [7:0] IN,
-    output logic    [7:0] OUT
+    input logic     CLK,        //Clock
+    input logic     RST,        //Reset
+    input logic     EN,         //Enable
+    input logic     [7:0] IN,   //Data in
+    output logic    [7:0] OUT   //Data out
 );
 
 always_ff @( posedge CLK or posedge RST ) begin : Register
     if (RST) begin
-        OUT <= '0;
+        OUT <= '0; //reset condition
     end else if (EN) begin
-        OUT <= IN;
+        OUT <= IN; //enable condition
     end
 end
     

@@ -1,10 +1,11 @@
 `timescale 1ns/1ps
 module TOP (
-  input logic CLK,
-  input logic RST,
-  output logic [7:0] DATA
+  input logic CLK,        //Clock
+  input logic RST,        //Reset
+  output logic [7:0] DATA //Ouput for observing ALU result
 );
 
+//declarations of internal connections between modules
 logic jmp;
 logic fr_z;
 logic fr_s;
@@ -27,21 +28,23 @@ logic [7:0] acc_data;
 logic [9:0] dm_addr;
 logic [15:0] pm_wire;
 
-assign DATA = alu_result;
+assign DATA = alu_result; //constantous asign of ALU result operations to output
 
-PC pc (
+//declarations of modules
+//Program Counter
+PC pc ( 
   .CLK(CLK),
   .RST(RST),
   .JMP(jmp),
   .JMP_ADDR(jmp_addr),
   .PC_OUT(pc_wire)
 );
-
+//Program Memory
 PM pm (
   .PM_IN(pc_wire),
   .PM_OUT(pm_wire)
 );
-
+//Instruction Decoder
 ID id (
   .ID_IN(pm_wire),
   .FR_Z(fr_z),
@@ -57,7 +60,7 @@ ID id (
   .ALU_OP(alu_op),
   .ACC_EN(acc_en)
 );
-
+//Register File
 RF rf (
   .CLK(CLK),
   .RST(RST),
@@ -66,7 +69,7 @@ RF rf (
   .RF_IN(acc_data),
   .RF_OUT(rf_data)
 );
-
+//Data Memory
 DM dm (
   .CLK(CLK),
   .RST(RST),
@@ -75,7 +78,7 @@ DM dm (
   .DM_IN(acc_data),
   .DM_OUT(dm_data)
 );
-
+//ALU Operand Multiplexer
 ALU_MUX alu_mux (
   .ID_DATA(id_data),
   .RF_DATA(rf_data),
@@ -83,7 +86,7 @@ ALU_MUX alu_mux (
   .SRC(alu_mux_src),
   .ALU_DATA(alu_data)
 );
-
+//Arithmetic-Logical Unit
 ALU alu (
   .IN_A(acc_data),
   .IN_R(alu_data),
@@ -92,7 +95,7 @@ ALU alu (
   .OUT_A(alu_result),
   .OUT_CY(fr_cy_out)
 );
-
+//Flag Register
 FR fr (
   .CLK(CLK),
   .RST(RST),
@@ -102,7 +105,7 @@ FR fr (
   .Z(fr_z),
   .S(fr_s)
 );
-
+//Accumulator
 Register acc (
   .CLK(CLK),
   .RST(RST),
