@@ -27,8 +27,9 @@ logic [7:0] acc_data;
 logic [9:0] dm_addr;
 logic [15:0] pm_wire;
 
+assign DATA = alu_result;
 
-PC (
+PC pc (
   .CLK(CLK),
   .RST(RST),
   .JMP(jmp),
@@ -36,12 +37,12 @@ PC (
   .PC_OUT(pc_wire)
 );
 
-PM (
+PM pm (
   .PM_IN(pc_wire),
   .PM_OUT(pm_wire)
 );
 
-ID (
+ID id (
   .ID_IN(pm_wire),
   .FR_Z(fr_z),
   .FR_S(fr_s),
@@ -57,7 +58,7 @@ ID (
   .ACC_EN(acc_en)
 );
 
-RF (
+RF rf (
   .CLK(CLK),
   .RST(RST),
   .RF_EN(rf_en),
@@ -66,7 +67,7 @@ RF (
   .RF_OUT(rf_data)
 );
 
-DM (
+DM dm (
   .CLK(CLK),
   .RST(RST),
   .DM_EN(dm_en),
@@ -75,7 +76,7 @@ DM (
   .DM_OUT(dm_data)
 );
 
-ALU_MUX (
+ALU_MUX alu_mux (
   .ID_DATA(id_data),
   .RF_DATA(rf_data),
   .DM_DATA(dm_data),
@@ -83,7 +84,7 @@ ALU_MUX (
   .ALU_DATA(alu_data)
 );
 
-ALU (
+ALU alu (
   .IN_A(acc_data),
   .IN_R(alu_data),
   .IN_OP(alu_op),
@@ -92,7 +93,7 @@ ALU (
   .OUT_CY(fr_cy_out)
 );
 
-FR (
+FR fr (
   .CLK(CLK),
   .RST(RST),
   .ALU_RESULT(alu_result),
@@ -102,7 +103,7 @@ FR (
   .S(fr_s)
 );
 
-Register(
+Register acc (
   .CLK(CLK),
   .RST(RST),
   .EN(acc_en),
